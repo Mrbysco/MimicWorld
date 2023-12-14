@@ -1,0 +1,20 @@
+modLoader="javafml"
+loaderVersion="[47,)"
+issueTrackerURL="https://github.com/Mrbysco/MimicWorld/issues"
+license="MIT"
+
+[[mods]]
+modId="mimicworld"
+version="${file.jarVersion}"
+displayName="Mimic World"
+displayURL="https://www.curseforge.com/minecraft/mc-mods/mimicworld"
+authors="ShyNieke, Mrbysco"
+description='''
+Adds a dimension that is a copy of the vanilla overworld
+'''
+[[dependencies.mimicworld]]
+modId="minecraft"
+mandatory=true
+versionRange="[1.20,1.21)"
+ordering="NONE"
+side="BOTH"
