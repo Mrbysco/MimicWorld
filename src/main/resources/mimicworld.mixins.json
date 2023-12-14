@@ -3,7 +3,7 @@
   "minVersion": "0.8.5",
   "compatibilityLevel": "JAVA_17",
   "package": "com.mrbysco.mimicworld.mixin",
-  "refmap": "georenouveau.refmap.json",
+  "refmap": "mimicworld.refmap.json",
   "target": "@env(DEFAULT)",
   "mixins": [
     "SculkShriekerBlockEntityMixin"
