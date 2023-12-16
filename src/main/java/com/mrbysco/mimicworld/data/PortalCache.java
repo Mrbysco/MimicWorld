@@ -10,6 +10,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.storage.DimensionDataStorage;
 
@@ -79,6 +80,23 @@ public class PortalCache extends SavedData {
 
 	public List<BlockPos> getPortals(ResourceLocation dimensionLocation) {
 		return paintingPositionMap.get(dimensionLocation);
+	}
+
+	public void validateNearestPortals(ServerLevel destWorld, BlockPos nearestPos) {
+		ResourceLocation dimensionLocation = destWorld.dimension().location();
+		List<BlockPos> portalList = getPortals(dimensionLocation);
+		for (BlockPos pos : portalList) {
+			//Only check portals that are near the given position
+			if (pos.distManhattan(nearestPos) < 16) {
+				//Load chunk to check the location of the portal
+				destWorld.getChunk(pos);
+				//Check if the portal is still valid and remove it if it isn't
+				if (!destWorld.getBlockState(pos).is(Blocks.SCULK_SHRIEKER)) {
+					portalList.remove(pos);
+				}
+			}
+		}
+		setDirty();
 	}
 
 	public void addPortal(ResourceLocation dimensionLocation, BlockPos pos) {

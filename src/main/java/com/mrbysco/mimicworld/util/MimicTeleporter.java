@@ -23,13 +23,15 @@ public class MimicTeleporter implements ITeleporter {
 		PortalCache cache = PortalCache.get(destWorld);
 		BlockPos originalPos = entity.blockPosition();
 
+		//Validate nearest portals
+		cache.validateNearestPortals(destWorld, originalPos);
 		List<BlockPos> portalList = cache.getPortals(destWorld.dimension().location()).stream().filter(pos -> pos.distManhattan(originalPos) < 16).toList();
-		if(portalList.isEmpty()) {
+		if (portalList.isEmpty()) {
 			PortalChecker.placePortal(destWorld, entity.blockPosition().below());
 		}
 
 		// No spawn position or isn't valid, so loop around location
-		for (var checkPos: BlockPos.spiralAround(originalPos, 16, Direction.EAST, Direction.SOUTH)) {
+		for (var checkPos : BlockPos.spiralAround(originalPos, 16, Direction.EAST, Direction.SOUTH)) {
 			// Load chunk to actually check the location
 			destWorld.getChunk(checkPos);
 
@@ -52,7 +54,7 @@ public class MimicTeleporter implements ITeleporter {
 		// We could use the AABB method; however we want to account fo edge cases where the entity is touching a corner with
 		// the box, causing the safety check to fail and change the spawn position.
 		// This is also why we round to the higher or lower value
-		for (var entityBoxPos: BlockPos.betweenClosed(
+		for (var entityBoxPos : BlockPos.betweenClosed(
 				Math.round(checkPos.getX() - halfWidth),
 				checkPos.getY(),
 				Math.round(checkPos.getZ() - halfWidth),
