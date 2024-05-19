@@ -1,1 +1,1 @@
-* Initial port to 1.20.4 (NeoForge)
+* Initial port to 1.20.6
