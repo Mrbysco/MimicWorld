@@ -4,6 +4,7 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.mrbysco.mimicworld.MimicWorldMod;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -33,7 +34,7 @@ public class PortalCache extends SavedData {
 
 	private final ListMultimap<ResourceLocation, BlockPos> paintingPositionMap = ArrayListMultimap.create();
 
-	public static PortalCache load(CompoundTag tag) {
+	public static PortalCache load(CompoundTag tag, HolderLookup.Provider registries) {
 		ListMultimap<ResourceLocation, BlockPos> paintingMap = ArrayListMultimap.create();
 		for (String nbtName : tag.getAllKeys()) {
 			ListTag dimensionNBTList = new ListTag();
@@ -63,7 +64,7 @@ public class PortalCache extends SavedData {
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag compound) {
+	public CompoundTag save(CompoundTag compound, HolderLookup.Provider registries) {
 		for (ResourceLocation dimensionLocation : paintingPositionMap.keySet()) {
 			List<BlockPos> globalPosList = paintingPositionMap.get(dimensionLocation);
 

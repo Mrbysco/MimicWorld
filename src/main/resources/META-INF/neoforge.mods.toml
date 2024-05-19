@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[2,)"
+loaderVersion="[3,)"
 issueTrackerURL="https://github.com/Mrbysco/MimicWorld/issues"
 license="MIT"
 
@@ -15,12 +15,12 @@ Adds a dimension that is a copy of the vanilla overworld
 [[dependencies.mimicworld]]
 modId="minecraft"
 type="required"
-versionRange="[1.20.4,1.21)"
+versionRange="[1.20.6,1.21)"
 ordering="NONE"
 side="BOTH"
 [[dependencies.mimicworld]]
 modId="neoforge"
 type="required"
-versionRange="[20.4.167,)"
+versionRange="[20.6.72-beta,)"
 ordering="NONE"
 side="BOTH"
