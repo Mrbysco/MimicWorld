@@ -1,1 +1,1 @@
-* Fix crash upon world creation
+* Initial port to 1.20.4 (NeoForge)
