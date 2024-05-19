@@ -7,10 +7,9 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.common.NeoForge;
 import org.slf4j.Logger;
 
 @Mod(MimicWorldMod.MOD_ID)
@@ -20,12 +19,10 @@ public class MimicWorldMod {
 
 	public static final ResourceKey<Level> MIMIC_WORLD_KEY = ResourceKey.create(Registries.DIMENSION, new ResourceLocation(MOD_ID, "mimic_world"));
 
-	public MimicWorldMod() {
-		IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
-
+	public MimicWorldMod(IEventBus eventBus) {
 		MimicRegistry.BLOCKS.register(eventBus);
 		MimicRegistry.POI_TYPES.register(eventBus);
 
-		MinecraftForge.EVENT_BUS.register(new PortalHandler());
+		NeoForge.EVENT_BUS.register(new PortalHandler());
 	}
 }

@@ -126,6 +126,6 @@ public class PortalCache extends SavedData {
 		ServerLevel overworld = world.getServer().getLevel(Level.OVERWORLD);
 
 		DimensionDataStorage storage = overworld.getDataStorage();
-		return storage.computeIfAbsent(PortalCache::load, PortalCache::new, DATA_NAME);
+		return storage.computeIfAbsent(new Factory<>(PortalCache::new, PortalCache::load), DATA_NAME);
 	}
 }

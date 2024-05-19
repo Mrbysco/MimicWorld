@@ -2,18 +2,37 @@ package com.mrbysco.mimicworld.handler;
 
 import com.mrbysco.mimicworld.data.PortalCache;
 import com.mrbysco.mimicworld.registry.MimicRegistry;
+import com.mrbysco.mimicworld.util.PortalChecker;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.event.level.BlockEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraft.world.level.block.SculkShriekerBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.neoforged.bus.api.EventPriority;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.event.VanillaGameEvent;
+import net.neoforged.neoforge.event.level.BlockEvent;
 
 import java.util.List;
 
 public class PortalHandler {
+
+	@SubscribeEvent
+	public void onGameEvent(VanillaGameEvent event) {
+		if (event.getVanillaEvent() == GameEvent.SHRIEK && event.getLevel() instanceof ServerLevel serverLevel) {
+			BlockPos pos = BlockPos.containing(event.getEventPosition());
+			BlockState blockstate = serverLevel.getBlockState(pos);
+			if (blockstate.is(Blocks.SCULK_SHRIEKER) && !blockstate.getValue(SculkShriekerBlock.CAN_SUMMON)) {
+				boolean validPortal = PortalChecker.checkPortal(serverLevel, pos);
+				if (validPortal) {
+					PortalChecker.activatePortal(serverLevel, pos);
+				}
+			}
+		}
+	}
 
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public void onBreak(BlockEvent.BreakEvent event) {

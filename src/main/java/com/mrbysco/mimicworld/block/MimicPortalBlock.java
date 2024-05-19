@@ -9,13 +9,16 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -28,10 +31,12 @@ public class MimicPortalBlock extends Block {
 		super(properties);
 	}
 
+	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
 		return SHAPE;
 	}
 
+	@Override
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
 		if (level instanceof ServerLevel && entity.canChangeDimensions() &&
 				Shapes.joinIsNotEmpty(Shapes.create(entity.getBoundingBox().move((double) (-pos.getX()), (double) (-pos.getY()), (double) (-pos.getZ()))),
@@ -55,6 +60,7 @@ public class MimicPortalBlock extends Block {
 
 	}
 
+	@Override
 	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource randomSource) {
 		double d0 = (double) pos.getX() + randomSource.nextDouble();
 		double d1 = (double) pos.getY() + 0.8D;
@@ -62,10 +68,12 @@ public class MimicPortalBlock extends Block {
 		level.addParticle(ParticleTypes.WARPED_SPORE, d0, d1, d2, 0.0D, 0.0D, 0.0D);
 	}
 
-	public ItemStack getCloneItemStack(BlockGetter getter, BlockPos pos, BlockState state) {
+	@Override
+	public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
 		return ItemStack.EMPTY;
 	}
 
+	@Override
 	public boolean canBeReplaced(BlockState state, Fluid fluid) {
 		return false;
 	}
