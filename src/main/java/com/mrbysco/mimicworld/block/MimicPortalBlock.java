@@ -38,7 +38,7 @@ public class MimicPortalBlock extends Block {
 
 	@Override
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-		if (level instanceof ServerLevel && entity.canChangeDimensions() &&
+		if (level instanceof ServerLevel &&
 				Shapes.joinIsNotEmpty(Shapes.create(entity.getBoundingBox().move((double) (-pos.getX()), (double) (-pos.getY()), (double) (-pos.getZ()))),
 						state.getShape(level, pos), BooleanOp.AND)) {
 			ResourceKey<Level> resourcekey = level.dimension() == MimicWorldMod.MIMIC_WORLD_KEY ? Level.OVERWORLD : MimicWorldMod.MIMIC_WORLD_KEY;
@@ -46,10 +46,11 @@ public class MimicPortalBlock extends Block {
 			if (serverLevel == null)
 				return;
 
+			if (!entity.canChangeDimensions(level, serverLevel)) return;
 			CompoundTag persistentData = entity.getPersistentData();
 			if (!persistentData.contains("MimicWorldPortalCooldown")) {
 				persistentData.putLong("MimicWorldPortalCooldown", level.getGameTime());
-				entity.changeDimension(serverLevel, new MimicTeleporter());
+				entity.changeDimension(MimicTeleporter.getPortalInfo(entity, serverLevel));
 			} else {
 				long cooldown = persistentData.getLong("MimicWorldPortalCooldown");
 				if (level.getGameTime() - cooldown > 80) {

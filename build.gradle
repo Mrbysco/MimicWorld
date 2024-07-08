@@ -3,8 +3,8 @@ plugins {
     id 'eclipse'
     id 'idea'
     id 'maven-publish'
-    id 'net.neoforged.gradle.userdev' version '7.0.133'
-    id 'net.darkhax.curseforgegradle' version '1.1.18'
+    id 'net.neoforged.gradle.userdev' version '7.0.153'
+    id 'net.darkhax.curseforgegradle' version '1.1.24'
     id 'com.modrinth.minotaur' version "2.+"
 }
 
@@ -41,11 +41,11 @@ runs {
 
     client {
         // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
-        systemProperty 'neoforge.enabledGameTestNamespaces', "${mod_id}"
+        systemProperty 'forge.enabledGameTestNamespaces', "${mod_id}"
     }
 
     server {
-        systemProperty 'neoforge.enabledGameTestNamespaces', "${mod_id}"
+        systemProperty 'forge.enabledGameTestNamespaces', "${mod_id}"
         programArgument '--nogui'
     }
 
@@ -65,23 +65,15 @@ repositories {
     maven {
         url = "https://maven.blamejared.com"
     }
-    maven {
-        url = "https://maven.saps.dev/releases"
-        content {
-            includeGroup "com.shynieke.geore"
-        }
-    }
 }
 
 dependencies {
     implementation "net.neoforged:neoforge:${neo_version}"
 
-//    compileOnly "mezz.jei:jei-${mc_version}-common-api:${jei_version}"
-//    compileOnly "mezz.jei:jei-${mc_version}-neoforge-api:${jei_version}"
-//
-//    runtimeOnly "mezz.jei:jei-${mc_version}-neoforge:${jei_version}"
+    compileOnly "mezz.jei:jei-${mc_version}-common-api:${jei_version}"
+    compileOnly "mezz.jei:jei-${mc_version}-neoforge-api:${jei_version}"
 
-//    runtimeOnly "com.shynieke.geore:GeOre-${mc_version}:${geore_version}"
+    runtimeOnly "mezz.jei:jei-${mc_version}-neoforge:${jei_version}"
 }
 
 jar {
@@ -104,7 +96,7 @@ publishing {
             groupId project.group
             artifactId base.archivesName.get()
             version project.version
-//            from components.java
+            from components.java
         }
     }
     repositories {
@@ -126,9 +118,9 @@ if (System.getenv().CURSEFORGE_KEY) {
 
         def mainFile = upload(project.curseforge_id, jar)
         mainFile.releaseType = 'beta'
-        mainFile.addGameVersion "NeoForge"
-        mainFile.addGameVersion "${mc_version}"
-        mainFile.addGameVersion "Java 21"
+        mainFile.addModLoader("NeoForge")
+        mainFile.addGameVersion("${mc_version}")
+        mainFile.addJavaVersion("Java 21")
         mainFile.addGameVersion('Server', 'Client')
 
         mainFile.changelog = file("$project.rootDir/changelog.md")
@@ -150,11 +142,11 @@ if (System.getenv().MODRINTH_KEY) {
         changelog = file("$project.rootDir/changelog.md").text
         gameVersions = ["${mc_version}"]
         loaders = ["neoforge"]
-    }
-}
 
-tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
+        dependencies {
+
+        }
+    }
 }
 
 // IDEA no longer automatically downloads sources/javadoc jars for dependencies, so we need to explicitly enable the behavior.

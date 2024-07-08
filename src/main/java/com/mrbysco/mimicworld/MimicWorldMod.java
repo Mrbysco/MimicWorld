@@ -17,7 +17,7 @@ public class MimicWorldMod {
 	public static final String MOD_ID = "mimicworld";
 	public static final Logger LOGGER = LogUtils.getLogger();
 
-	public static final ResourceKey<Level> MIMIC_WORLD_KEY = ResourceKey.create(Registries.DIMENSION, new ResourceLocation(MOD_ID, "mimic_world"));
+	public static final ResourceKey<Level> MIMIC_WORLD_KEY = ResourceKey.create(Registries.DIMENSION, ResourceLocation.fromNamespaceAndPath(MOD_ID, "mimic_world"));
 
 	public MimicWorldMod(IEventBus eventBus) {
 		MimicRegistry.BLOCKS.register(eventBus);

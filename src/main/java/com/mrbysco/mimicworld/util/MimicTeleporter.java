@@ -6,20 +6,15 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.portal.PortalInfo;
+import net.minecraft.world.level.portal.DimensionTransition;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.util.ITeleporter;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.function.Function;
 
-public class MimicTeleporter implements ITeleporter {
-	public MimicTeleporter() {
-	}
+public class MimicTeleporter {
 
-	@Override
-	public @Nullable PortalInfo getPortalInfo(Entity entity, ServerLevel destWorld, Function<ServerLevel, PortalInfo> defaultPortalInfo) {
+	public static DimensionTransition getPortalInfo(Entity entity, ServerLevel destWorld) {
 		PortalCache cache = PortalCache.get(destWorld);
 		BlockPos originalPos = entity.blockPosition();
 
@@ -42,10 +37,10 @@ public class MimicTeleporter implements ITeleporter {
 			) continue;
 
 			// All positions the entity is in is safe, so spawn in that location
-			return new PortalInfo(new Vec3(checkPos.getX() + 0.5, checkPos.getY(), checkPos.getZ() + 0.5), Vec3.ZERO, entity.getYRot(), entity.getXRot());
+			return new DimensionTransition(destWorld, new Vec3(checkPos.getX() + 0.5, checkPos.getY(), checkPos.getZ() + 0.5), Vec3.ZERO, entity.getYRot(), entity.getXRot(), DimensionTransition.DO_NOTHING);
 		}
 
-		return new PortalInfo(entity.position(), Vec3.ZERO, entity.getYRot(), entity.getXRot());
+		return new DimensionTransition(destWorld, entity.position(), Vec3.ZERO, entity.getYRot(), entity.getXRot(), DimensionTransition.DO_NOTHING);
 	}
 
 	private static boolean isPositionSafe(Entity entity, ServerLevel destWorld, BlockPos checkPos, int getMinBuildHeight) {
@@ -73,11 +68,5 @@ public class MimicTeleporter implements ITeleporter {
 
 		// If nothing fails, it is a safe location
 		return true;
-	}
-
-	@Override
-	public Entity placeEntity(Entity newEntity, ServerLevel currentWorld, ServerLevel destWorld, float yaw, Function<Boolean, Entity> repositionEntity) {
-		newEntity.fallDistance = 0;
-		return repositionEntity.apply(false); //Must be false or we fall on vanilla
 	}
 }
