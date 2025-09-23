@@ -86,6 +86,7 @@ public class PortalCache extends SavedData {
 		}
 		ServerLevel overworld = world.getServer().getLevel(Level.OVERWORLD);
 
+		assert overworld != null;
 		DimensionDataStorage storage = overworld.getDataStorage();
 		return storage.computeIfAbsent(type());
 	}

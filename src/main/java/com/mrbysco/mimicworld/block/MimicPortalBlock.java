@@ -23,6 +23,7 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.NotNull;
 
 public class MimicPortalBlock extends Block {
 	protected static final VoxelShape SHAPE = Block.box(0.0D, 6.0D, 0.0D, 16.0D, 12.0D, 16.0D);
@@ -31,15 +32,16 @@ public class MimicPortalBlock extends Block {
 		super(properties);
 	}
 
+	@NotNull
 	@Override
-	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
+	public VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter getter, @NotNull BlockPos pos, @NotNull CollisionContext context) {
 		return SHAPE;
 	}
 
 	@Override
-	protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier effectApplier) {
+	protected void entityInside(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Entity entity, @NotNull InsideBlockEffectApplier effectApplier) {
 		if (level instanceof ServerLevel &&
-				Shapes.joinIsNotEmpty(Shapes.create(entity.getBoundingBox().move((double) (-pos.getX()), (double) (-pos.getY()), (double) (-pos.getZ()))),
+				Shapes.joinIsNotEmpty(Shapes.create(entity.getBoundingBox().move(-pos.getX(), -pos.getY(), -pos.getZ())),
 						state.getShape(level, pos), BooleanOp.AND)) {
 			ResourceKey<Level> resourcekey = level.dimension() == MimicWorldMod.MIMIC_WORLD_KEY ? Level.OVERWORLD : MimicWorldMod.MIMIC_WORLD_KEY;
 			ServerLevel serverLevel = ((ServerLevel) level).getServer().getLevel(resourcekey);
@@ -62,25 +64,26 @@ public class MimicPortalBlock extends Block {
 	}
 
 	@Override
-	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource randomSource) {
+	public void animateTick(@NotNull BlockState state, Level level, BlockPos pos, RandomSource randomSource) {
 		double d0 = (double) pos.getX() + randomSource.nextDouble();
 		double d1 = (double) pos.getY() + 0.8D;
 		double d2 = (double) pos.getZ() + randomSource.nextDouble();
 		level.addParticle(ParticleTypes.WARPED_SPORE, d0, d1, d2, 0.0D, 0.0D, 0.0D);
 	}
 
+	@NotNull
 	@Override
-	public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData, Player player) {
+	public ItemStack getCloneItemStack(@NotNull LevelReader level, @NotNull BlockPos pos, @NotNull BlockState state, boolean includeData, @NotNull Player player) {
 		return ItemStack.EMPTY;
 	}
 
 	@Override
-	public boolean canBeReplaced(BlockState state, Fluid fluid) {
+	public boolean canBeReplaced(@NotNull BlockState state, @NotNull Fluid fluid) {
 		return false;
 	}
 
 	@Override
-	public boolean isPossibleToRespawnInThis(BlockState state) {
+	public boolean isPossibleToRespawnInThis(@NotNull BlockState state) {
 		return false;
 	}
 }
