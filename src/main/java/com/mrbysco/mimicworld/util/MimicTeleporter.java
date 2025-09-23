@@ -6,14 +6,14 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.portal.DimensionTransition;
+import net.minecraft.world.level.portal.TeleportTransition;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 
 public class MimicTeleporter {
 
-	public static DimensionTransition getPortalInfo(Entity entity, ServerLevel destWorld) {
+	public static TeleportTransition getPortalInfo(Entity entity, ServerLevel destWorld) {
 		PortalCache cache = PortalCache.get(destWorld);
 		BlockPos originalPos = entity.blockPosition();
 
@@ -32,17 +32,17 @@ public class MimicTeleporter {
 			// Since we are checking going down, we want to verify the player is on the floor
 			// Check the player position afterward
 			if (!destWorld.getBlockState(checkPos.immutable().relative(Direction.DOWN)).isSolid()
-					|| !isPositionSafe(entity, destWorld, checkPos, destWorld.getMinBuildHeight())
+					|| !isPositionSafe(entity, destWorld, checkPos, destWorld.getMinY())
 			) continue;
 
 			// All positions the entity is in is safe, so spawn in that location
-			return new DimensionTransition(destWorld, new Vec3(checkPos.getX() + 0.5, checkPos.getY(), checkPos.getZ() + 0.5), Vec3.ZERO, entity.getYRot(), entity.getXRot(), DimensionTransition.DO_NOTHING);
+			return new TeleportTransition(destWorld, new Vec3(checkPos.getX() + 0.5, checkPos.getY(), checkPos.getZ() + 0.5), Vec3.ZERO, entity.getYRot(), entity.getXRot(), TeleportTransition.DO_NOTHING);
 		}
 
-		return new DimensionTransition(destWorld, entity.position(), Vec3.ZERO, entity.getYRot(), entity.getXRot(), DimensionTransition.DO_NOTHING);
+		return new TeleportTransition(destWorld, entity.position(), Vec3.ZERO, entity.getYRot(), entity.getXRot(), TeleportTransition.DO_NOTHING);
 	}
 
-	private static boolean isPositionSafe(Entity entity, ServerLevel destWorld, BlockPos checkPos, int getMinBuildHeight) {
+	private static boolean isPositionSafe(Entity entity, ServerLevel destWorld, BlockPos checkPos, int minY) {
 		var halfWidth = entity.getBbWidth() / 2;
 		// We construct the position based on the entity radius
 		// We could use the AABB method; however we want to account fo edge cases where the entity is touching a corner with
