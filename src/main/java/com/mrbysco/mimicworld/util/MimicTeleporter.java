@@ -10,7 +10,6 @@ import net.minecraft.world.level.portal.DimensionTransition;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
-import java.util.function.Function;
 
 public class MimicTeleporter {
 
