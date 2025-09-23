@@ -3,6 +3,7 @@ package com.mrbysco.mimicworld.util;
 import com.mrbysco.mimicworld.data.PortalCache;
 import com.mrbysco.mimicworld.registry.MimicRegistry;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.block.Blocks;
@@ -56,7 +57,7 @@ public class PortalChecker {
 			level.playSound(null, center, Blocks.NETHER_PORTAL.getSoundType(level.getBlockState(center), level, center, null).getPlaceSound(), SoundSource.BLOCKS, 1.0F, 1.0F);
 		}
 
-		PortalCache.get(level).addPortal(level.dimension().location(), blockpos);
+		PortalCache.get(level).addPortal(GlobalPos.of(level.dimension(), blockpos));
 	}
 
 	public static void placePortal(ServerLevel level, BlockPos blockpos) {
@@ -81,6 +82,6 @@ public class PortalChecker {
 			level.setBlock(corner, Blocks.SCULK.defaultBlockState(), 3);
 		}
 
-		PortalCache.get(level).addPortal(level.dimension().location(), blockpos);
+		PortalCache.get(level).addPortal(GlobalPos.of(level.dimension(), blockpos));
 	}
 }

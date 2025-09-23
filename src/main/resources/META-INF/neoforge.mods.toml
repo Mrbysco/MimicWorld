@@ -15,12 +15,12 @@ Adds a dimension that is a copy of the vanilla overworld
 [[dependencies.mimicworld]]
 modId="minecraft"
 type="required"
-versionRange="[1.21.4,1.22)"
+versionRange="[1.21.5,1.22)"
 ordering="NONE"
 side="BOTH"
 [[dependencies.mimicworld]]
 modId="neoforge"
 type="required"
-versionRange="[21.4.0-beta,)"
+versionRange="[21.5.0-beta,)"
 ordering="NONE"
 side="BOTH"

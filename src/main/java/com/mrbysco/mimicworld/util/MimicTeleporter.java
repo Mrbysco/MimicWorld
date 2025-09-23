@@ -19,7 +19,7 @@ public class MimicTeleporter {
 
 		//Validate nearest portals
 		cache.validateNearestPortals(destWorld, originalPos);
-		List<BlockPos> portalList = cache.getPortals(destWorld.dimension().location()).stream().filter(pos -> pos.distManhattan(originalPos) < 16).toList();
+		List<BlockPos> portalList = cache.getPortalPositions(destWorld.dimension()).stream().filter(pos -> pos.distManhattan(originalPos) < 16).toList();
 		if (portalList.isEmpty()) {
 			PortalChecker.placePortal(destWorld, entity.blockPosition().below());
 		}

@@ -4,6 +4,7 @@ import com.mrbysco.mimicworld.data.PortalCache;
 import com.mrbysco.mimicworld.registry.MimicRegistry;
 import com.mrbysco.mimicworld.util.PortalChecker;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.LevelAccessor;
@@ -52,7 +53,7 @@ public class PortalHandler {
 					level.removeBlock(center, false);
 			}
 
-			PortalCache.get(serverLevel).removePortal(serverLevel.dimension().location(), blockpos);
+			PortalCache.get(serverLevel).removePortal((GlobalPos.of(serverLevel.dimension(), blockpos)));
 		}
 
 		if (event.getState().is(Blocks.SCULK) || event.getState().is(MimicRegistry.MIMIC_PORTAL.get())) {
@@ -81,7 +82,7 @@ public class PortalHandler {
 						level.removeBlock(corner, false);
 					}
 				}
-				PortalCache.get(serverLevel).removeNearestPortal(serverLevel.dimension().location(), blockpos.below());
+				PortalCache.get(serverLevel).removeNearestPortal(new GlobalPos(serverLevel.dimension(), blockpos.below()));
 			}
 
 		}

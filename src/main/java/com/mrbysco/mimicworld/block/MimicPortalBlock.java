@@ -9,6 +9,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.InsideBlockEffectApplier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -36,7 +37,7 @@ public class MimicPortalBlock extends Block {
 	}
 
 	@Override
-	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+	protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier effectApplier) {
 		if (level instanceof ServerLevel &&
 				Shapes.joinIsNotEmpty(Shapes.create(entity.getBoundingBox().move((double) (-pos.getX()), (double) (-pos.getY()), (double) (-pos.getZ()))),
 						state.getShape(level, pos), BooleanOp.AND)) {
@@ -51,7 +52,7 @@ public class MimicPortalBlock extends Block {
 				persistentData.putLong("MimicWorldPortalCooldown", level.getGameTime());
 				entity.teleport(MimicTeleporter.getPortalInfo(entity, serverLevel));
 			} else {
-				long cooldown = persistentData.getLong("MimicWorldPortalCooldown");
+				long cooldown = persistentData.getLongOr("MimicWorldPortalCooldown", 0);
 				if (level.getGameTime() - cooldown > 80) {
 					persistentData.remove("MimicWorldPortalCooldown");
 				}
