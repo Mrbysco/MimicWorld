@@ -39,7 +39,7 @@ public class MimicPortalBlock extends Block {
 	}
 
 	@Override
-	protected void entityInside(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Entity entity, @NotNull InsideBlockEffectApplier effectApplier) {
+	protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier applier, boolean intersects) {
 		if (level instanceof ServerLevel &&
 				Shapes.joinIsNotEmpty(Shapes.create(entity.getBoundingBox().move(-pos.getX(), -pos.getY(), -pos.getZ())),
 						state.getShape(level, pos), BooleanOp.AND)) {
@@ -60,7 +60,6 @@ public class MimicPortalBlock extends Block {
 				}
 			}
 		}
-
 	}
 
 	@Override
