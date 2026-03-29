@@ -4,8 +4,8 @@ import com.mojang.logging.LogUtils;
 import com.mrbysco.mimicworld.handler.PortalHandler;
 import com.mrbysco.mimicworld.registry.MimicRegistry;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
@@ -17,7 +17,7 @@ public class MimicWorldMod {
 	public static final String MOD_ID = "mimicworld";
 	public static final Logger LOGGER = LogUtils.getLogger();
 
-	public static final ResourceKey<Level> MIMIC_WORLD_KEY = ResourceKey.create(Registries.DIMENSION, ResourceLocation.fromNamespaceAndPath(MOD_ID, "mimic_world"));
+	public static final ResourceKey<Level> MIMIC_WORLD_KEY = ResourceKey.create(Registries.DIMENSION, Identifier.fromNamespaceAndPath(MOD_ID, "mimic_world"));
 
 	public MimicWorldMod(IEventBus eventBus) {
 		MimicRegistry.BLOCKS.register(eventBus);
