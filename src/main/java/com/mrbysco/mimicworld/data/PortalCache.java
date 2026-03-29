@@ -5,19 +5,20 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.mrbysco.mimicworld.MimicWorldMod;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.saveddata.SavedDataType;
-import net.minecraft.world.level.storage.DimensionDataStorage;
+import net.minecraft.world.level.storage.SavedDataStorage;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class PortalCache extends SavedData {
-	private static final String DATA_NAME = MimicWorldMod.MOD_ID + "_portal_data";
+	private static final Identifier ID = Identifier.fromNamespaceAndPath(MimicWorldMod.MOD_ID, "portal_cache");
 	private final List<GlobalPos> portalPositions = new ArrayList<>();
 
 	public static final Codec<PortalCache> CODEC = RecordCodecBuilder.create(inst -> inst.group(
@@ -77,7 +78,7 @@ public class PortalCache extends SavedData {
 	}
 
 	public static SavedDataType<PortalCache> type() {
-		return new SavedDataType<>(DATA_NAME, PortalCache::new, CODEC, null);
+		return new SavedDataType<>(ID, PortalCache::new, CODEC, null);
 	}
 
 	public static PortalCache get(Level world) {
@@ -87,7 +88,7 @@ public class PortalCache extends SavedData {
 		ServerLevel overworld = world.getServer().getLevel(Level.OVERWORLD);
 
 		assert overworld != null;
-		DimensionDataStorage storage = overworld.getDataStorage();
+		SavedDataStorage storage = overworld.getDataStorage();
 		return storage.computeIfAbsent(type());
 	}
 }
