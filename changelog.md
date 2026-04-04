@@ -1,1 +1,1 @@
-* Initial port to 26.1
+* Fix invalid dimension_type json
