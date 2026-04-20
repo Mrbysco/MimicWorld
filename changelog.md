@@ -1,1 +1,1 @@
-* Fix invalid dimension_type json
+* Update NeoForge support (Requires **26.1.2.21-beta** or above)
