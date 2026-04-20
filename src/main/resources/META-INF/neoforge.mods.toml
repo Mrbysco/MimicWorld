@@ -21,6 +21,6 @@ side="BOTH"
 [[dependencies.mimicworld]]
 modId="neoforge"
 type="required"
-versionRange="[26.1.0.0-alpha,)"
+versionRange="[26.1.2.21-beta,)"
 ordering="NONE"
 side="BOTH"

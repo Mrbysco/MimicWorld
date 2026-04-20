@@ -15,7 +15,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.VanillaGameEvent;
-import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.neoforge.event.level.block.BreakBlockEvent;
 
 import java.util.List;
 
@@ -36,7 +36,7 @@ public class PortalHandler {
 	}
 
 	@SubscribeEvent(priority = EventPriority.LOWEST)
-	public void onBreak(BlockEvent.BreakEvent event) {
+	public void onBreak(BreakBlockEvent event) {
 		LevelAccessor level = event.getLevel();
 		BlockPos blockpos = event.getPos();
 		if (level.isClientSide()) return; //Don't run on client
